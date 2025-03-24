@@ -1,13 +1,13 @@
 import type { IFluidContainer } from "@fluidframework/fluid-static";
 import React from "react";
 import type { IFluidChatUser } from "../definitions";
-import type { Signaler } from "@fluid-experimental/data-objects";
 import { type Reaction, ReactionToEmojiMap } from "./Reactions";
+import type { IFluidChatContainerSchema } from "../fluid";
 
 const NotificationTimeoutMs = 3000; // 3 seconds
 
 export interface INotificationDisplayProps {
-	container: IFluidContainer | undefined;
+	container: IFluidContainer<IFluidChatContainerSchema> | undefined;
 	user: IFluidChatUser;
 }
 
@@ -27,8 +27,7 @@ export const NotificationDisplay: React.FunctionComponent<
 			return;
 		}
 		const timeouts: Set<ReturnType<typeof setTimeout>> = new Set();
-		const signaler: Signaler | undefined = container?.initialObjects
-			?.signaler as Signaler | undefined;
+		const signaler = container?.initialObjects?.signaler;
 		if (!signaler) {
 			console.warn("No Signaler found in container");
 			return;

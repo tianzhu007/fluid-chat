@@ -1,10 +1,10 @@
-import {
-	type AzureUser,
-	type ITokenProvider,
-	type ITokenResponse,
-	ScopeType,
+import type {
+	ITokenProvider,
+	ITokenResponse,
 } from "@fluidframework/azure-client";
-import { generateToken } from "@fluidframework/azure-service-utils";
+import type { AzureUser } from "@fluidframework/azure-client/internal";
+import { ScopeType } from "@fluidframework/driver-definitions/legacy";
+import { generateToken } from "@fluidframework/azure-service-utils/internal";
 import type { IFluidChatUser } from "../definitions";
 import { localStorageManager, StorageKeys } from "./localStorage";
 import { canWrite } from "./users";

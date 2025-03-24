@@ -14,14 +14,14 @@
 		"lint:fix": "biome check . --apply"
 	},
 	"dependencies": {
-		"@fluid-experimental/data-objects": "2.0.0-rc.1.0.4",
-		"@fluidframework/azure-client": "^2.0.0-rc.1.0.4",
-		"@fluidframework/azure-service-utils": "^2.0.0-rc.1.0.4",
-		"@fluidframework/container-definitions": "^2.0.0-rc.1.0.4",
-		"@fluidframework/container-loader": "^2.0.0-rc.1.0.4",
-		"@fluidframework/fluid-static": "^2.0.0-rc.1.0.4",
-		"@fluidframework/map": "^2.0.0-rc.1.0.4",
-		"@fluidframework/test-runtime-utils": "^2.0.0-rc.1.0.4",
+		"@fluid-experimental/data-objects": "patch:@fluid-experimental/data-objects@npm%3A2.30.0#~/.yarn/patches/@fluid-experimental-data-objects-npm-2.30.0-f5efcdb46c.patch",
+		"@fluidframework/azure-client": "2.30.0",
+		"@fluidframework/azure-service-utils": "2.30.0",
+		"@fluidframework/container-definitions": "2.30.0",
+		"@fluidframework/container-loader": "2.30.0",
+		"@fluidframework/fluid-static": "2.30.0",
+		"@fluidframework/map": "2.30.0",
+		"@fluidframework/test-runtime-utils": "2.30.0",
 		"lorem-ipsum": "^2.0.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
@@ -55,6 +55,9 @@
 		}
 	},
 	"resolutions": {
-		"@fluid-experimental/data-objects@2.0.0-rc.1.0.4": "patch:@fluid-experimental/data-objects@npm:2.0.0-rc.1.0.4#.yarn/patches/@fluid-experimental-data-objects-npm-2.0.0-rc.1.0.4-46f9458e1b.patch"
+		"@fluid-experimental/data-objects@2.30.0": "patch:@fluid-experimental/data-objects@npm:2.30.0#.yarn/patches/@fluid-experimental-data-objects-npm-2.30.0-f5efcdb46c.patch"
+	},
+	"@parcel/resolver-default": {
+		"packageExports": true
 	}
 }

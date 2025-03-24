@@ -2,8 +2,8 @@ import {
 	AzureClient,
 	type AzureContainerServices,
 	type AzureRemoteConnectionConfig,
-	type AzureUser,
 } from "@fluidframework/azure-client";
+import type { AzureUser } from "@fluidframework/azure-client/internal";
 import type {
 	IFluidContainer,
 	ContainerSchema,
@@ -55,6 +55,22 @@ const getAzureClient = async (user: IFluidChatUser): Promise<AzureClient> => {
 	return client;
 };
 
+export interface IFluidChatContainerSchema extends ContainerSchema {
+	/**
+	 * The initial objects that will be created in the container.
+	 */
+	initialObjects: {
+		map: typeof SharedMap;
+		hiddenData: typeof SharedMap;
+		signaler: typeof Signaler;
+	};
+	/**
+	 * The dynamic object types that can be created in the container.
+	 * This allows for the creation of additional SharedMap objects.
+	 */
+	dynamicObjectTypes: [typeof SharedMap];
+}
+
 /**
  * Creates an AzureClient instance, then uses that to create a new attached container or get an existing container.
  * Before attaching a new container, it will first add 3 new "pointer" messages to the initial "map" SharedMap object while detached.
@@ -64,7 +80,7 @@ export const getFluidData = async (
 	user: IFluidChatUser,
 ): Promise<IFluidDocument> => {
 	const client = await getAzureClient(user);
-	const containerSchema: ContainerSchema = {
+	const containerSchema: IFluidChatContainerSchema = {
 		initialObjects: {
 			map: SharedMap,
 			hiddenData: SharedMap,
@@ -72,13 +88,16 @@ export const getFluidData = async (
 		},
 		dynamicObjectTypes: [SharedMap],
 	};
-	let container: IFluidContainer;
+	let container: IFluidContainer<IFluidChatContainerSchema>;
 	let services: AzureContainerServices;
 	let id: string | undefined = documentId;
 	console.time("disconnected");
 	if (!id) {
-		({ container, services } = await client.createContainer(containerSchema));
-		const map: SharedMap = container.initialObjects.map as SharedMap;
+		({ container, services } = await client.createContainer(
+			containerSchema,
+			"2",
+		));
+		const map: SharedMap = container.initialObjects.map;
 		map.set(SharedMapKeys.messages, []);
 		if (window.location.search.includes(QueryStringKeys.initialPayload)) {
 			const hiddenData: SharedMap = container.initialObjects
@@ -113,7 +132,7 @@ export const getFluidData = async (
 		const AzureUserAssertBugText = 'Provided user was not an "AzureUser".';
 		const documentId = id;
 		const getContainer = () =>
-			client.getContainer(documentId, containerSchema).catch((error) => {
+			client.getContainer(documentId, containerSchema, "2").catch((error) => {
 				if (error.message === AzureUserAssertBugText) {
 					retryDelay = Math.min(retryDelay * 2, 8000);
 					console.warn(

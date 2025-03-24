@@ -1,6 +1,7 @@
 import type { AzureContainerServices } from "@fluidframework/azure-client";
 import type { IFluidContainer } from "@fluidframework/fluid-static";
 import type { SharedMap } from "@fluidframework/map";
+import type { IFluidChatContainerSchema } from "./fluid";
 
 export const QueryStringKeys = Object.freeze({
 	initialPayload: "initialpayload",
@@ -14,7 +15,7 @@ export const SharedMapKeys = Object.freeze({
 export type Theme = "dark" | "light";
 
 export interface IFluidDocument {
-	container: IFluidContainer;
+	container: IFluidContainer<IFluidChatContainerSchema>;
 	services: AzureContainerServices;
 	id: string;
 }

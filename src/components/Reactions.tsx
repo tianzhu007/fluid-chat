@@ -1,5 +1,4 @@
 import type { IFluidContainer } from "@fluidframework/fluid-static";
-import type { Signaler } from "@fluid-experimental/data-objects";
 import React from "react";
 import {
 	RiThumbUpFill,
@@ -12,6 +11,7 @@ import {
 import { v4 as uuid } from "uuid";
 import type { IFluidChatUser } from "../definitions";
 import type { INotification } from "./NotificationDisplay";
+import type { IFluidChatContainerSchema } from "../fluid";
 
 export enum Reaction {
 	Like = "like",
@@ -32,7 +32,7 @@ export const ReactionToEmojiMap: { [key in Reaction]: JSX.Element } = {
 };
 
 export interface IReactionMenuProps {
-	container: IFluidContainer | undefined;
+	container: IFluidContainer<IFluidChatContainerSchema> | undefined;
 	user: IFluidChatUser;
 }
 
@@ -42,7 +42,7 @@ export const ReactionMenu: React.FunctionComponent<IReactionMenuProps> = ({
 }) => {
 	const handleReaction = React.useCallback(
 		(reaction: Reaction) => {
-			const signaler: Signaler | undefined = container?.initialObjects.signaler;
+			const signaler = container?.initialObjects.signaler;
 			const reactionNotification: INotification = {
 				id: uuid(),
 				type: "reaction",

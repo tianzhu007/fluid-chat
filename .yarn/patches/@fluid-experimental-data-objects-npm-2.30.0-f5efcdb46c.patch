@@ -1,8 +1,8 @@
 diff --git a/dist/signaler/signaler.js b/dist/signaler/signaler.js
-index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b3772bdb0990 100644
+index 33d2a0a0f3406b4460568052e7c14ee539fc8afb..ba3e2762c398a6144a278c3ac9534d1eba1159e6 100644
 --- a/dist/signaler/signaler.js
 +++ b/dist/signaler/signaler.js
-@@ -39,7 +39,7 @@ class InternalSignaler extends TypedEventEmitter {
+@@ -41,7 +41,7 @@ class InternalSignaler extends client_utils_1.TypedEventEmitter {
              // Only call listeners when the runtime is connected and if the signal has an
              // identifiable sender clientId.  The listener is responsible for deciding how
              // it wants to handle local/remote signals
@@ -11,7 +11,7 @@ index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b377
                  this.emitter.emit(message.type, clientId, local, message.content);
              }
          });
-@@ -60,9 +60,7 @@ class InternalSignaler extends TypedEventEmitter {
+@@ -62,9 +62,7 @@ class InternalSignaler extends client_utils_1.TypedEventEmitter {
      }
      submitSignal(signalName, payload) {
          const signalerSignalName = this.getSignalerSignalName(signalName);
@@ -23,10 +23,10 @@ index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b377
  }
  /**
 diff --git a/lib/signaler/signaler.js b/lib/signaler/signaler.js
-index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b3772bdb0990 100644
+index 5c39dcd21f888744eb6b4a3633bfa843004c5958..c2c803e45a6eadb2365ad2dbe6ce4236b47241d4 100644
 --- a/lib/signaler/signaler.js
 +++ b/lib/signaler/signaler.js
-@@ -39,7 +39,7 @@ class InternalSignaler extends TypedEventEmitter {
+@@ -38,7 +38,7 @@ class InternalSignaler extends TypedEventEmitter {
              // Only call listeners when the runtime is connected and if the signal has an
              // identifiable sender clientId.  The listener is responsible for deciding how
              // it wants to handle local/remote signals
@@ -35,7 +35,7 @@ index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b377
                  this.emitter.emit(message.type, clientId, local, message.content);
              }
          });
-@@ -60,9 +60,7 @@ class InternalSignaler extends TypedEventEmitter {
+@@ -59,9 +59,7 @@ class InternalSignaler extends TypedEventEmitter {
      }
      submitSignal(signalName, payload) {
          const signalerSignalName = this.getSignalerSignalName(signalName);
@@ -47,10 +47,10 @@ index 3f905735a79831fef2d307f24071fef473edd8f5..5203f9b3779cc4cb6826ad6ba7f7b377
  }
  /**
 diff --git a/src/signaler/signaler.ts b/src/signaler/signaler.ts
-index 248768b7696f124729461c6acb226a39d71cd815..3fde9a805c208e8a301024bdfe7e71709020faa2 100644
+index 5b0fe8d6eec64dc2fe2c9e24d321bcf263c6cca3..8707327dd281e3eaf16f51a8e1998e5948b7e5ae 100644
 --- a/src/signaler/signaler.ts
 +++ b/src/signaler/signaler.ts
-@@ -98,7 +98,7 @@ class InternalSignaler extends TypedEventEmitter<IErrorEvent> implements ISignal
+@@ -113,7 +113,7 @@ class InternalSignaler extends TypedEventEmitter<IErrorEvent> implements ISignal
  			// Only call listeners when the runtime is connected and if the signal has an
  			// identifiable sender clientId.  The listener is responsible for deciding how
  			// it wants to handle local/remote signals
@@ -59,7 +59,7 @@ index 248768b7696f124729461c6acb226a39d71cd815..3fde9a805c208e8a301024bdfe7e7170
  				this.emitter.emit(message.type, clientId, local, message.content);
  			}
  		});
-@@ -124,9 +124,7 @@ class InternalSignaler extends TypedEventEmitter<IErrorEvent> implements ISignal
+@@ -139,9 +139,7 @@ class InternalSignaler extends TypedEventEmitter<IErrorEvent> implements ISignal
  
  	public submitSignal<T>(signalName: string, payload?: Jsonable<T>) {
  		const signalerSignalName = this.getSignalerSignalName(signalName);

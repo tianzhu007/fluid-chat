@@ -19,16 +19,16 @@ export const AudienceDisplay: React.FunctionComponent<IAudienceDisplayProps> = (
 		const updateMembers = () => {
 			const allMembers = audience.getMembers();
 			setMembers(
-				new Set(Array.from(allMembers.entries()).map(([, m]) => m.userId)),
+				new Set(Array.from(allMembers.entries()).map(([, m]) => m.id)),
 			);
 		};
 		const memberAddListener = (clientId: string, member: AzureMember) => {
-			console.log("Audience Member Added: ", clientId, member.userId);
+			console.log("Audience Member Added: ", clientId, member.id);
 			updateMembers();
 		};
 		audience.on("memberAdded", memberAddListener);
 		const memberRemoveListener = (clientId: string, member: AzureMember) => {
-			console.log("Audience Member Removed: ", clientId, member.userId);
+			console.log("Audience Member Removed: ", clientId, member.id);
 			updateMembers();
 		};
 		audience.on("memberRemoved", memberRemoveListener);

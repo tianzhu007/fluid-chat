@@ -1,5 +1,5 @@
 import type { IFluidContainer } from "@fluidframework/fluid-static";
-import type { SharedMap } from "@fluidframework/map";
+import type { SharedMap } from "@fluidframework/map/lib";
 import React from "react";
 import {
 	type IPointerMessage,
@@ -9,6 +9,7 @@ import {
 } from "../definitions";
 import { getHexCodeColorFromString } from "../utils";
 import { Help } from "./Help";
+import type { IFluidChatContainerSchema } from "../fluid";
 
 interface IMessageProps {
 	content: string;
@@ -66,7 +67,7 @@ const EmptySessionDisplay: React.FunctionComponent = () => {
 };
 
 interface IMessageDisplayProps {
-	container: IFluidContainer | undefined;
+	container: IFluidContainer<IFluidChatContainerSchema> | undefined;
 	user: IFluidChatUser;
 }
 export const MessagesDisplay: React.FunctionComponent<IMessageDisplayProps> = (
