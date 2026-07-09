@@ -24,6 +24,7 @@ import {
 	Kilobyte,
 	randomString,
 	getServiceConfig,
+	enforceServiceEndpoints,
 } from "./utils";
 import { Signaler } from "@fluid-experimental/data-objects";
 
@@ -42,16 +43,31 @@ const getAzureClient = async (user: IFluidChatUser): Promise<AzureClient> => {
 		tenantId,
 		tenantKey,
 		serviceEndpoint: endpoint,
+		deltaStreamEndpoint,
+		storageEndpoint,
 	} = await getServiceConfig();
 	console.log({ tenantId, tenantKey, endpoint, user });
+	const tokenProvider = new CustomInsecureTokenProvider(tenantKey, azureUser);
 	const client = new AzureClient({
 		connection: {
 			type: "remote",
 			endpoint: endpoint,
-			tokenProvider: new CustomInsecureTokenProvider(tenantKey, azureUser),
+			tokenProvider,
 			tenantId: tenantId,
 		} as AzureRemoteConnectionConfig,
 	});
+	// When explicit delta stream (nexus) and storage (historian) endpoints are
+	// configured, enforce them verbatim instead of relying on service discovery
+	// from the orderer (alfred).
+	if (deltaStreamEndpoint && storageEndpoint) {
+		enforceServiceEndpoints(client, {
+			ordererUrl: endpoint,
+			storageUrl: storageEndpoint,
+			deltaStreamUrl: deltaStreamEndpoint,
+			tenantId,
+			tokenProvider,
+		});
+	}
 	return client;
 };
 

@@ -1,9 +1,11 @@
 import type { IServiceConfig } from "../definitions";
 
 const exampleConfig: IServiceConfig = {
-	serviceEndpoint: "http://fluidrelay.azure.com",
-	tenantId: "some-tenant-id-string",
-	tenantKey: "some-tenant-key-string",
+	serviceEndpoint: "xxxx",
+	tenantId: "fluid",
+	tenantKey: "xxxxx",
+	deltaStreamEndpoint: "xxxx",
+	storageEndpoint: "xxxx",
 };
 
 const defaultConfig = exampleConfig;

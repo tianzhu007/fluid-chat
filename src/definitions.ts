@@ -47,7 +47,20 @@ export interface IFluidChatUser {
 }
 
 export interface IServiceConfig {
+	/**
+	 * Orderer + host endpoint (alfred).
+	 */
 	serviceEndpoint: string;
 	tenantId: string;
 	tenantKey: string;
+	/**
+	 * Delta stream endpoint (nexus). When set together with {@link IServiceConfig.storageEndpoint},
+	 * these endpoints are enforced verbatim instead of relying on service discovery from the orderer.
+	 */
+	deltaStreamEndpoint?: string;
+	/**
+	 * Storage endpoint (historian). When set together with {@link IServiceConfig.deltaStreamEndpoint},
+	 * these endpoints are enforced verbatim instead of relying on service discovery from the orderer.
+	 */
+	storageEndpoint?: string;
 }
