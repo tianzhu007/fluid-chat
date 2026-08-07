@@ -107,9 +107,14 @@ authorises the request and signs with the tenant key server-side. No key reaches
 Two things must be configured on the token service side or sign-in fails:
 
 - `http://localhost:1234/blank.html` registered as an **SPA redirect URI** on the App
-  Registration — otherwise Entra rejects the sign-in with `AADSTS50011`. Sign-in redirects to a
-  blank page rather than the app, so the popup does not load a second copy of the application
-  before closing.
+  Registration — otherwise Entra rejects the sign-in with `AADSTS50011`. Sign-in redirects
+  there rather than to the app: from MSAL Browser v5 the popup cannot complete on its own, and
+  that page runs the redirect bridge that hands the response back and lets the popup close.
+
+Sign-in also evaluates your organisation's Conditional Access policies. A private or InPrivate
+window does not present device state, so a policy requiring a managed or compliant device
+refuses it there while a normal window succeeds — that is the policy working, not a fault in
+the app.
 - `http://localhost:1234` in the Function App's **CORS** allowed origins — otherwise the
   browser blocks the call before it is made.
 

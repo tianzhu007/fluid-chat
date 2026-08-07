@@ -6,15 +6,18 @@
 	</head>
 	<body>
 		<!--
-			MSAL sign-in redirect target. Deliberately empty.
+			MSAL sign-in redirect target.
 
-			The popup navigates here with the authorization response in the URL, and the window
-			that opened it reads the result and closes it. Pointing the redirect at index.html
-			instead makes the popup boot a second copy of the whole application before it is
-			closed, which is what "the app starts up in the popup" looks like.
+			From MSAL Browser v5 the popup cannot complete on its own: redirect.ts hands the
+			authentication response back to the window that opened it, and without that the popup
+			stays open indefinitely.
 
-			This page must also be registered as an SPA redirect URI on the App Registration.
+			The application must not be loaded here. Doing so is what makes the popup display a
+			second copy of the app rather than closing.
+
+			This page's URL must be registered as an SPA redirect URI on the App Registration.
 		-->
 		<p>Signing in…</p>
+		<script type="module" src="./redirect.ts"></script>
 	</body>
 </html>

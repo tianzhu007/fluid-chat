@@ -128,7 +128,9 @@ export class EntraTokenProvider implements ITokenProvider {
 
 		let account: AccountInfo | undefined = msal.getAllAccounts()[0];
 		if (account === undefined) {
-			const login = await msal.loginPopup({ scopes });
+			// select_account so a machine signed into several work accounts prompts rather than
+			// silently picking the first one, which is rarely the intended one.
+			const login = await msal.loginPopup({ scopes, prompt: "select_account" });
 			account = login.account ?? undefined;
 			if (account === undefined) {
 				throw new Error("Entra sign-in did not return an account.");
@@ -174,7 +176,9 @@ export class EntraTokenProvider implements ITokenProvider {
 					// closes it. Must be registered as an SPA redirect URI on the App Registration.
 					redirectUri: `${window.location.origin}/blank.html`,
 				},
-				cache: { cacheLocation: "sessionStorage" },
+				// localStorage rather than sessionStorage: the popup is a separate window and does
+				// not share the opener's session storage, which MSAL's popup flow depends on.
+				cache: { cacheLocation: "localStorage" },
 			});
 			await msal.initialize();
 			this.msal = msal;
