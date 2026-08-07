@@ -3,6 +3,7 @@ import {
 	type AzureContainerServices,
 	type AzureRemoteConnectionConfig,
 } from "@fluidframework/azure-client";
+import type { ITokenProvider } from "@fluidframework/azure-client";
 import type { AzureUser } from "@fluidframework/azure-client/internal";
 import type {
 	IFluidContainer,
@@ -21,6 +22,7 @@ import {
 } from "./definitions";
 import {
 	CustomInsecureTokenProvider,
+	EntraTokenProvider,
 	Kilobyte,
 	randomString,
 	getServiceConfig,
@@ -45,9 +47,27 @@ const getAzureClient = async (user: IFluidChatUser): Promise<AzureClient> => {
 		serviceEndpoint: endpoint,
 		deltaStreamEndpoint,
 		storageEndpoint,
+		tokenService,
 	} = await getServiceConfig();
-	console.log({ tenantId, tenantKey, endpoint, user });
-	const tokenProvider = new CustomInsecureTokenProvider(tenantKey, azureUser);
+	// The tenant key is deliberately not logged: without a token service it is a live signing
+	// credential sitting in the browser.
+	console.log({ tenantId, endpoint, user, tokenService: tokenService?.url });
+
+	let tokenProvider: ITokenProvider;
+	if (tokenService) {
+		tokenProvider = new EntraTokenProvider(
+			tokenService.url,
+			tokenService.clientId,
+			tokenService.entraTenantId,
+		);
+	} else {
+		if (!tenantKey) {
+			throw new Error(
+				"Service config needs either a tokenService or a tenantKey. See src/config/config.example.ts.",
+			);
+		}
+		tokenProvider = new CustomInsecureTokenProvider(tenantKey, azureUser);
+	}
 	const client = new AzureClient({
 		connection: {
 			type: "remote",

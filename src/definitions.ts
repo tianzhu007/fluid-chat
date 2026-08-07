@@ -46,13 +46,41 @@ export interface IFluidChatUser {
 	permissions: ("read" | "write")[];
 }
 
+/**
+ * Points the client at a deployed token service, so Fluid tokens are minted server-side
+ * against a signed-in Entra identity instead of being signed in the browser.
+ */
+export interface ITokenServiceConfig {
+	/**
+	 * URL of the token endpoint, e.g. `https://<function-app>.azurewebsites.net/api/token`.
+	 */
+	url: string;
+	/**
+	 * Application (client) ID of the token service's Entra App Registration.
+	 */
+	clientId: string;
+	/**
+	 * Entra directory (tenant) ID users sign in against.
+	 */
+	entraTenantId: string;
+}
+
 export interface IServiceConfig {
 	/**
 	 * Orderer + host endpoint (alfred).
 	 */
 	serviceEndpoint: string;
 	tenantId: string;
-	tenantKey: string;
+	/**
+	 * Tenant signing key, used only when {@link IServiceConfig.tokenService} is absent. The
+	 * client signs its own tokens in that case, which gives the page the ability to mint a
+	 * token for any user and any document -- acceptable for local development only.
+	 */
+	tenantKey?: string;
+	/**
+	 * When set, tokens come from this service and no tenant key is needed in the client.
+	 */
+	tokenService?: ITokenServiceConfig;
 	/**
 	 * Delta stream endpoint (nexus). When set together with {@link IServiceConfig.storageEndpoint},
 	 * these endpoints are enforced verbatim instead of relying on service discovery from the orderer.

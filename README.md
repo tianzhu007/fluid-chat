@@ -78,6 +78,46 @@ When set up in this way, you can add many different service configurations and s
 ENV=example2 yarn start:remote
 ```
 
+### Run - Self-hosted with a token service
+
+By default the app signs its own Fluid tokens in the browser using `tenantKey`. That gives the
+page the ability to mint a token for any user and any document, which is fine locally and not
+something to point at a shared deployment.
+
+To have tokens minted server-side instead, add a `tokenService` block to your `config.ts` and
+leave `tenantKey` out:
+
+```typescript
+const selfhost: IServiceConfig = {
+    serviceEndpoint: "https://alfred-....azurefd.net",
+    tenantId: "fluid",
+    deltaStreamEndpoint: "wss://nexus-....azurefd.net",
+    storageEndpoint: "https://historian-....azurefd.net",
+    tokenService: {
+        url: "https://<function-app>.azurewebsites.net/api/token",
+        clientId: "<app registration client id>",
+        entraTenantId: "<entra directory id>",
+    },
+};
+```
+
+The app then signs the user in with Microsoft Entra ID and asks the token service, which
+authorises the request and signs with the tenant key server-side. No key reaches the browser.
+
+Two things must be configured on the token service side or sign-in fails:
+
+- `http://localhost:1234` registered as an **SPA redirect URI** on the App Registration —
+  otherwise Entra rejects the sign-in with `AADSTS50011`.
+- `http://localhost:1234` in the Function App's **CORS** allowed origins — otherwise the
+  browser blocks the call before it is made.
+
+Both come from `spaRedirectUris` and `allowedOrigins` in the self-host deploy parameters.
+
+Note that `?readonly` no longer restricts the token. It set `permissions: ["read"]` on the
+client, which the browser-signing provider honoured; a server-side service does not trust a
+client-declared permission. It still applies to the UI. If you need genuinely read-only tokens,
+that belongs in the token service's `authorize()` function.
+
 ## Troubleshooting
 
 Most problems with running Fluid Chat can be quickly resolved by removing the [Parcel](https://parceljs.org/) cache. This is especially true when switching between local and remote services, or after pulling the latest Git repo changes.
