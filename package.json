@@ -1,7 +1,10 @@
 {
 	"name": "fluid-react",
 	"packageManager": "yarn@4.1.1",
-	"source": "src/index.html",
+	"source": [
+		"src/index.html",
+		"src/blank.html"
+	],
 	"type": "commonjs",
 	"scripts": {
 		"build": "parcel build",

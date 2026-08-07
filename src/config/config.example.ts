@@ -30,15 +30,30 @@ const tokenServiceConfig: IServiceConfig = {
 
 const defaultConfig = exampleConfig;
 
+// Keyed by the value of ENV. `ENV=tokenservice yarn start:remote` selects the entry below --
+// the key, not the variable name.
+const configsByEnv: Record<string, IServiceConfig> = {
+	example: exampleConfig,
+	tokenservice: tokenServiceConfig,
+};
+
 export const config = (() => {
 	const env = process.env.ENV;
-	console.log("Using env: ", env);
-	switch (env) {
-		case "example":
-			return exampleConfig;
-		case "tokenservice":
-			return tokenServiceConfig;
-		default:
-			return defaultConfig;
+	if (env === undefined || env === "") {
+		console.log("No ENV set, using default config");
+		return defaultConfig;
 	}
+	const selected = configsByEnv[env];
+	if (selected === undefined) {
+		// Falling back to the default on a typo sends the app at whichever service that entry
+		// names, with whichever credentials it carries. The failure then surfaces as an unrelated
+		// 403 from riddler, a long way from the mistake, so an unknown ENV is refused instead.
+		throw new Error(
+			`Unknown ENV "${env}". Known values: ${Object.keys(configsByEnv).join(
+				", ",
+			)}`,
+		);
+	}
+	console.log("Using env: ", env);
+	return selected;
 })();

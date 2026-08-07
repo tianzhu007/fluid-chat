@@ -106,12 +106,23 @@ authorises the request and signs with the tenant key server-side. No key reaches
 
 Two things must be configured on the token service side or sign-in fails:
 
-- `http://localhost:1234` registered as an **SPA redirect URI** on the App Registration —
-  otherwise Entra rejects the sign-in with `AADSTS50011`.
+- `http://localhost:1234/blank.html` registered as an **SPA redirect URI** on the App
+  Registration — otherwise Entra rejects the sign-in with `AADSTS50011`. Sign-in redirects to a
+  blank page rather than the app, so the popup does not load a second copy of the application
+  before closing.
 - `http://localhost:1234` in the Function App's **CORS** allowed origins — otherwise the
   browser blocks the call before it is made.
 
 Both come from `spaRedirectUris` and `allowedOrigins` in the self-host deploy parameters.
+
+Run it with the **key** from the config map, not the variable name:
+
+```bash
+ENV=tokenservice yarn start:remote
+```
+
+An ENV that matches no entry now throws, rather than quietly falling back to the default config
+and failing later as a `403` from riddler.
 
 Note that `?readonly` no longer restricts the token. It set `permissions: ["read"]` on the
 client, which the browser-signing provider honoured; a server-side service does not trust a

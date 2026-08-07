@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Signing in…</title>
+	</head>
+	<body>
+		<!--
+			MSAL sign-in redirect target. Deliberately empty.
+
+			The popup navigates here with the authorization response in the URL, and the window
+			that opened it reads the result and closes it. Pointing the redirect at index.html
+			instead makes the popup boot a second copy of the whole application before it is
+			closed, which is what "the app starts up in the popup" looks like.
+
+			This page must also be registered as an SPA redirect URI on the App Registration.
+		-->
+		<p>Signing in…</p>
+	</body>
+</html>

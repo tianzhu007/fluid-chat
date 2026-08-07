@@ -142,8 +142,23 @@ export class EntraTokenProvider implements ITokenProvider {
 			// Silent acquisition fails whenever interaction is required -- consent not yet given,
 			// an expired session, or a conditional access prompt. Falling back to a popup covers
 			// all of them without having to tell them apart.
-			const result = await msal.acquireTokenPopup({ account, scopes });
-			return result.accessToken;
+			try {
+				const result = await msal.acquireTokenPopup({ account, scopes });
+				return result.accessToken;
+			} catch (error) {
+				// Without this the failure reaches the Fluid driver as an opaque token error, and
+				// the symptom is a container that never connects with nothing in the network tab
+				// to explain why.
+				console.error("Entra token acquisition failed", error);
+				throw new Error(
+					`Could not get an Entra token for ${scopes[0]}. If the browser blocked the ` +
+						`sign-in popup, allow popups for this site. If sign-in was rejected, check ` +
+						`that this origin is registered as an SPA redirect URI on the App ` +
+						`Registration. Underlying error: ${
+							(error as Error)?.message ?? error
+						}`,
+				);
+			}
 		}
 	}
 
@@ -153,9 +168,11 @@ export class EntraTokenProvider implements ITokenProvider {
 				auth: {
 					clientId: this.clientId,
 					authority: `https://login.microsoftonline.com/${this.entraTenantId}`,
-					// Sign-in returns to the current page; this must also be registered as an SPA
-					// redirect URI on the App Registration or Entra rejects the request.
-					redirectUri: window.location.origin,
+					// Deliberately a blank page rather than the app. The popup navigates here to
+					// deliver the authorization response, and pointing it at the app instead makes
+					// the popup load a second copy of the whole application before the opener
+					// closes it. Must be registered as an SPA redirect URI on the App Registration.
+					redirectUri: `${window.location.origin}/blank.html`,
 				},
 				cache: { cacheLocation: "sessionStorage" },
 			});
