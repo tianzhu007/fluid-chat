@@ -2,6 +2,7 @@ export * from "./a11y";
 export * from "./chats";
 export * from "./colors";
 export * from "./configs";
+export * from "./entraTokenProvider";
 export * from "./fluid";
 export * from "./localStorage";
 export * from "./messages";

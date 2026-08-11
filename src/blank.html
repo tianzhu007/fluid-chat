@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Signing in…</title>
+	</head>
+	<body>
+		<!--
+			MSAL sign-in redirect target.
+
+			From MSAL Browser v5 the popup cannot complete on its own: redirect.ts hands the
+			authentication response back to the window that opened it, and without that the popup
+			stays open indefinitely.
+
+			The application must not be loaded here. Doing so is what makes the popup display a
+			second copy of the app rather than closing.
+
+			This page's URL must be registered as an SPA redirect URI on the App Registration.
+		-->
+		<p>Signing in…</p>
+		<script type="module" src="./redirect.ts"></script>
+	</body>
+</html>

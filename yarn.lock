@@ -14,6 +14,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/msal-browser@npm:^5.18.0":
+  version: 5.18.0
+  resolution: "@azure/msal-browser@npm:5.18.0"
+  dependencies:
+    "@azure/msal-common": "npm:16.12.0"
+  checksum: 10/41a54cef70605b9d8e2efcfe5426d8955870f9d8c4e79eb8cfa1c0a1b68f8a82ea17b5511d0673b7b2a178bd71c434c25024942d77c43597de89404b4f07cb60
+  languageName: node
+  linkType: hard
+
+"@azure/msal-common@npm:16.12.0":
+  version: 16.12.0
+  resolution: "@azure/msal-common@npm:16.12.0"
+  checksum: 10/08e231e9352a60d5bfe690e5260d5a721848de5d7e9797c0c41cf25a156ba9f72df067930034d7804e087dc277cbc66debd7a7db1689155be5cd8ad9ed82d8b2
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -332,7 +348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fluidframework/core-interfaces@npm:~2.30.0":
+"@fluidframework/core-interfaces@npm:2.30.0, @fluidframework/core-interfaces@npm:~2.30.0":
   version: 2.30.0
   resolution: "@fluidframework/core-interfaces@npm:2.30.0"
   checksum: 10/5ae5c69aa7a25a1d0f487a083e4bb4a25a0a0ef2f9512c3c5397de36a104b4ed363f3fc3dbe51b030bb43157ebaed5d69a5381feaa44ed61eebd75bf74a3e26f
@@ -393,7 +409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fluidframework/driver-definitions@npm:~2.30.0":
+"@fluidframework/driver-definitions@npm:2.30.0, @fluidframework/driver-definitions@npm:~2.30.0":
   version: 2.30.0
   resolution: "@fluidframework/driver-definitions@npm:2.30.0"
   dependencies:
@@ -531,7 +547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fluidframework/routerlicious-driver@npm:~2.30.0":
+"@fluidframework/routerlicious-driver@npm:2.30.0, @fluidframework/routerlicious-driver@npm:~2.30.0":
   version: 2.30.0
   resolution: "@fluidframework/routerlicious-driver@npm:2.30.0"
   dependencies:
@@ -3427,14 +3443,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "fluid-react@workspace:."
   dependencies:
+    "@azure/msal-browser": "npm:^5.18.0"
     "@biomejs/biome": "npm:^1.6.3"
     "@fluid-experimental/data-objects": "patch:@fluid-experimental/data-objects@npm%3A2.30.0#~/.yarn/patches/@fluid-experimental-data-objects-npm-2.30.0-f5efcdb46c.patch"
     "@fluidframework/azure-client": "npm:2.30.0"
     "@fluidframework/azure-service-utils": "npm:2.30.0"
     "@fluidframework/container-definitions": "npm:2.30.0"
     "@fluidframework/container-loader": "npm:2.30.0"
+    "@fluidframework/core-interfaces": "npm:2.30.0"
+    "@fluidframework/driver-definitions": "npm:2.30.0"
     "@fluidframework/fluid-static": "npm:2.30.0"
     "@fluidframework/map": "npm:2.30.0"
+    "@fluidframework/routerlicious-driver": "npm:2.30.0"
     "@fluidframework/test-runtime-utils": "npm:2.30.0"
     "@parcel/reporter-bundle-analyzer": "npm:^2.6.2"
     "@parcel/transformer-sass": "npm:^2.8.3"
