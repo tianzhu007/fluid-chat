@@ -77,6 +77,7 @@ export class EntraTokenProvider implements ITokenProvider {
 	): Promise<ITokenResponse> {
 		const cacheKey = `${tenantId}/${documentId ?? ""}`;
 		const now = Math.round(Date.now() / 1000);
+		const cacheable = Boolean(documentId);
 
 		// `refresh` is set by the driver after a request failed authorization, so a cached token
 		// must not be reused then even if it still looks current.
@@ -114,8 +115,9 @@ export class EntraTokenProvider implements ITokenProvider {
 			token: string;
 			expiresAt: number;
 		};
-		this.cache.set(cacheKey, { jwt: token, expiresAt });
-
+		if (cacheable) {
+			this.cache.set(cacheKey, { jwt: token, expiresAt });
+		}
 		return { fromCache: false, jwt: token };
 	}
 
