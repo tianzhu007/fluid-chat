@@ -93,15 +93,16 @@ export class EntraTokenProvider implements ITokenProvider {
 
 		const accessToken = await this.getEntraAccessToken();
 
-		const url = new URL(this.tokenServiceUrl);
-		url.searchParams.set("tenantId", tenantId);
-		if (documentId) {
-			url.searchParams.set("documentId", documentId);
-		}
-
-		const response = await fetch(url.toString(), {
-			method: "GET",
-			headers: { Authorization: `Bearer ${accessToken}` },
+		const response = await fetch(this.tokenServiceUrl, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				tenantId,
+				...(documentId ? { documentId } : {}),
+			}),
 		});
 
 		if (!response.ok) {
